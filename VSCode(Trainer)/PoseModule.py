@@ -18,7 +18,7 @@ class poseDetector():
         self.mpDraw = mp.solutions.drawing_utils
         self.mpPose = mp.solutions.pose
         #self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth, self.detectionCon, self.trackCon)
-        self.pose = self.mpPose.Pose(self.mode,min_detection_confidence=0.5, min_tracking_confidence=0.5)
+        self.pose = self.mpPose.Pose(self.mode,min_detection_confidence=0.6, min_tracking_confidence=0.6)
 
     def findPose(self, img, draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -53,7 +53,7 @@ class poseDetector():
         if angle < 0:
             angle += 360
 
-        # print(angle)
+        print(angle)
 
         # Draw
         if draw:
@@ -65,8 +65,7 @@ class poseDetector():
             cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
             cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
-            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50),
-                        cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         return angle
 
 def main():
@@ -75,7 +74,7 @@ def main():
     detector = poseDetector()
     while True:
         success, img = cap.read()
-        img = detector.findPose(img)
+        img = detector.findPose(img,False)
         lmList = detector.findPosition(img, draw=False)
         if len(lmList) != 0:
             print(lmList[14])
